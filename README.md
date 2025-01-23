@@ -11,6 +11,8 @@ Add the CLIENT_ID and CLIENT_SECRET from your OAuth provider to the .env.local f
 
 ## Getting Started
 
+install by `pnpm install --frozen-lockfile` to install packages of exact version as first installed
+
 First, run the development server: `npm run dev`
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
