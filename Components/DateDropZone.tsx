@@ -21,7 +21,8 @@ export function DateDropZone({dateKey, children}: DateDropZoneType) {
     <Paper ref={setNodeRef} style={style} 
       elevation={2}
       sx={{
-        mr: 1
+        mr: 1,
+        height: '100%'
       }}
       variant='outlined'
     >

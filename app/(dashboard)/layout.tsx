@@ -4,9 +4,16 @@ import { PageContainer } from '@toolpad/core/PageContainer';
 
 export default function Layout(props: { children: React.ReactNode }) {
   return (
-    <DashboardLayout>
+    <DashboardLayout
+      defaultSidebarCollapsed
+    >
       <PageContainer
-        maxWidth='xl'
+        maxWidth={false}
+        disableGutters
+        sx={{
+          pl: 5,
+          pr: 5
+        }}
       >
         {props.children}
       </PageContainer>

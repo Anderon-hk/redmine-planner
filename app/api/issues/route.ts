@@ -8,7 +8,6 @@ export async function GET(req: NextRequest) {
     return Response.json(dbIssues);
   }
 
-  console.log('Fetching issues from Redmine');
   let redmineData = [
     {
       "id": 50249,

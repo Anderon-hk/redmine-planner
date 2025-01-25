@@ -10,7 +10,6 @@ export type DueDateSetDialogProp = {
 
 export const DueDateSetDialog = ({open, handleClose, handleAddDateDropZone}: DueDateSetDialogProp ) => {
   const [newDateKey, setNewDateKey] = useState('');
-  console.log(`newDateKey: ${newDateKey}`)
   const closeDialog = () => {
     setNewDateKey('')
     handleClose()

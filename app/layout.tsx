@@ -27,6 +27,10 @@ const NAVIGATION: Navigation = [
     title: 'Issue Planner',
   },
   {
+    segment: 'modified-issues',
+    title: 'Modified Issues',
+  },
+  {
     kind: 'page',
     title: 'Settings',
     segment: 'settings',

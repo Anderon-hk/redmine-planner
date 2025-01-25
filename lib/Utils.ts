@@ -3,6 +3,7 @@
 import { GroupedIssues } from '@/store/issueGroupStore'
 import { Issue } from './RedmineTyping';
 import { query } from '@chronicstone/array-query';
+import { getPriority } from 'os';
 
 export const sortDateKyes = (groupedIssues: GroupedIssues) => Object.keys(groupedIssues).sort()
 
@@ -26,8 +27,10 @@ export function buildMapByKey(issues: Issue[], key: keyof Issue) {
   }, {} as Record<string|number, Issue>);
 }
 
-export function buildSortedFirstDueDateMap(issuesByVersion: Record<string, Issue[]>, direction: 'asc' | 'desc') {
-  let map = new Map<string, Issue>();
+export type IssuesByKeyMap<K extends keyof Issue> = Record<Issue[K], Issue>;
+
+export function buildSortedFirstDueDateMap(issuesByVersion: Record<string, Issue[]>, direction: 'asc' | 'desc'): IssuesByKeyMap<'fixed_version'>{
+  let mapping : IssuesByKeyMap<'fixed_version'> = {}
   Object.keys(issuesByVersion).forEach(version => {
     let issues = issuesByVersion[version];
     if(issues && issues.length > 0) {
@@ -37,8 +40,42 @@ export function buildSortedFirstDueDateMap(issuesByVersion: Record<string, Issue
           dir: direction
         }
       })[0]
-      map.set(version, firstDate)
+      mapping[version] = firstDate
     }
   });
-  return map
+  return mapping
+}
+
+export function issueVersionComparator(version1: Issue['fixed_version'], version2: Issue['fixed_version']) {
+  if(version1 === 'None') return 1
+  if(version2 === 'None') return -1
+  return version1.localeCompare(version2, undefined, {numeric: true})
+}
+
+export function getFieldValuesSet<F extends keyof Issue>(issues: Issue[], field: F, comparator: (a: Issue[F], b: Issue[F]) => number): Issue[F][] {
+  let values = new Set<Issue[F]>()
+  issues.forEach(issue =>
+    values.add(issue[field])
+  );
+
+  let valueArray = Array.from(values);
+  return valueArray.sort(comparator || undefined);
+}
+
+const PriorityOrder : Record<Issue['priority'], number> = {
+  'immediate': 0,
+  'urgent': 1,
+  'high': 2,
+  'medium': 3,
+  'low': 4,
+}
+
+export const getPriorityOrder = (priority: Issue['priority']) => {
+  return PriorityOrder[priority.toLowerCase()] || Infinity;
+}
+
+export function IssuePriorityComparator(issue1: Issue['priority'], issue2: Issue['priority']): number {
+  let issue1Priority = PriorityOrder[issue1.toLowerCase()] || Infinity;
+  let issue2Priority = PriorityOrder[issue2.toLocaleLowerCase()] || Infinity;
+  return issue1Priority - issue2Priority;
 }

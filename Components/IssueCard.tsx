@@ -38,12 +38,13 @@ export function IssueCard({issueObject}: IssueCardProps) {
     >
       <CardContent >
         <Tooltip title={issueObject.description} >
-          <Typography variant='h6' >{issueObject.subject}</Typography>
+          <Typography variant='subtitle1' >{issueObject.subject}</Typography>
         </Tooltip>
-        <Chip label={issueObject.fixed_version} />
-        <Chip label={`${issueObject.dev_time}H`} />
-        <Chip label={issueObject.tracker} />
-        <Chip label={issueObject.project} />
+        <Chip size='small' label={issueObject.priority} />
+        <Chip size='small' label={issueObject.fixed_version} />
+        <Chip size='small' label={`${issueObject.dev_time}H`} />
+        <Chip size='small' label={issueObject.tracker} />
+        <Chip size='small' label={issueObject.project} />
       </CardContent>
     </Card>
   );

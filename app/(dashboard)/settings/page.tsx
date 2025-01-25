@@ -5,8 +5,6 @@ export default async function SettingsPage() {
   await db.read();
   const settings = db.data.settings
 
-  console.log('settings', settings);
-
   return (
     <>
       <div>

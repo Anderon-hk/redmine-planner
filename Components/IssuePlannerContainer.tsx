@@ -10,6 +10,8 @@ import { IssueCard } from './IssueCard';
 import { DueDateSetDialog } from './DueDateSetDialog';
 import { sortDateKyes } from '@/lib/Utils';
 import { VersionLatestDueDateCard } from './VersionLatestDueDateCard';
+import CrossVersionDueDateWarning from './CrossVersionDueDateWarning';
+import { PriorityDueDateWarning } from './PriorityDueDateWarning';
 
 export default function IssuePlannerContainer() {
   const {issues, setIssues} = useIssuesStore();
@@ -31,8 +33,6 @@ export default function IssuePlannerContainer() {
   }, [groupedIssues])
 
   const handler = (event: DragEndEvent) => {
-    console.log(event);
-    console.log(`${event.active.id} was dropped on ${event.over?.id}`);
     if(event.active && event.over){
       let targetIssue = issues.find((issue) => issue.id === event.active.id);
       if(targetIssue){
@@ -51,16 +51,18 @@ export default function IssuePlannerContainer() {
   const toggleDrawer = () => {
     setRightDrawerOpen((val) => !val)
   }
+
+  console.log('IssuePlanner render')
   
   return (
     <>
-    <Container maxWidth="xl" disableGutters
+    <Container maxWidth={false} disableGutters
       sx={{
         display: 'flex'
 
       }}
     >
-      <Container maxWidth='xl' disableGutters >
+      <Container maxWidth={false} disableGutters >
         <AppBar position='static'>
           <Toolbar>
             <Button color="primary" onClick={handleOpen} variant="contained" >
@@ -71,7 +73,7 @@ export default function IssuePlannerContainer() {
             </Button>
           </Toolbar>
         </AppBar>
-        <Container maxWidth="xl" disableGutters 
+        <Container maxWidth={false} disableGutters 
           sx={{
             mt:1,
             display: 'flex',
@@ -105,14 +107,13 @@ export default function IssuePlannerContainer() {
       </Container>
       <Container disableGutters
         sx={{
-          width: '30%',
+          width: '20%',
           display: rightDrawerOpen ? 'block' : 'none'
         }}
       >
-        <Card >
-            <div>hello</div>
-        </Card>
         <VersionLatestDueDateCard />
+        <CrossVersionDueDateWarning />
+        <PriorityDueDateWarning />
       </Container>
     </Container>
     <DueDateSetDialog open={openDateKey} handleClose={handleClose} handleAddDateDropZone={addDueDate} />
