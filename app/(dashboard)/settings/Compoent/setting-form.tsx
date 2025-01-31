@@ -94,7 +94,6 @@ export default function SettingForm({ initialSettings }: { initialSettings: Data
             onChange={
               (e) => {
                 let hrs : number|undefined = Number(e.target.value)
-                console.log(`lower hrs: ${hrs}`)
                 if(isNaN(hrs)) {
                   hrs = undefined
                 }

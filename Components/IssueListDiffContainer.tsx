@@ -1,10 +1,9 @@
 'use client';
 
 import { useIssuesStore } from '@/store/issuesStore';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Button, Container, Stack, Typography } from '@mui/material';
-import { query } from '@chronicstone/array-query';
+import { Button, Container, Stack } from '@mui/material';
 import { buildIssuesMap } from '@/lib/Utils';
 import { Issue } from '@/lib/RedmineTyping';
 import { IssueNumberrenderer } from './IssueNumberRenderer';
@@ -42,7 +41,6 @@ function buildSelctCode(issues: Issue['id'][]): string {
 
 async function createCopyToClipBoard(code: string) {
   await navigator.clipboard.writeText(code)
-  console.log('Code copied to clipboard')
 }
 
 export default function IssuesListDiffContainer() {

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { NextAppProvider } from '@toolpad/core/nextjs';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LinearProgress from '@mui/material/LinearProgress'
 import type { Navigation } from '@toolpad/core/AppProvider';
 
@@ -13,11 +11,6 @@ const NAVIGATION: Navigation = [
     kind: 'header',
     title: 'Main items',
   },
-  // {
-  //   segment: '',
-  //   title: 'Dashboard',
-  //   icon: <DashboardIcon />,
-  // },
   {
     segment: '',
     title: 'Issues List',
@@ -38,7 +31,7 @@ const NAVIGATION: Navigation = [
 ];
 
 const BRANDING = {
-  title: 'My Toolpad Core Next.js App',
+  title: 'Redmine Issue Planner',
 };
 
 

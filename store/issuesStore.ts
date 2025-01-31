@@ -1,5 +1,5 @@
 import { Issue, Version } from '@/lib/RedmineTyping';
-import { buildIssuesMap, buildMapByKey, getFieldValuesSet, issueVersionComparator } from '@/lib/Utils';
+import { buildMapByKey, getFieldValuesSet, issueVersionComparator } from '@/lib/Utils';
 import { create } from 'zustand';
 
 

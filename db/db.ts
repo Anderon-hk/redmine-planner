@@ -1,6 +1,5 @@
 import { Issue, Version } from '@/lib/RedmineTyping';
-import { Low, LowSync } from 'lowdb';
-import { JSONFile, JSONFilePreset, JSONFileSync, JSONFileSyncPreset } from 'lowdb/node';
+import { JSONFilePreset } from 'lowdb/node';
 import { join } from 'path';
 import { cwd } from 'process';
 

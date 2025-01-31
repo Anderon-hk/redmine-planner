@@ -4,7 +4,6 @@ import { Issue } from '@/lib/RedmineTyping';
 import { Card, CardContent, Chip, Tooltip, Typography } from '@mui/material';
 import { useIssuesStore } from '@/store/issuesStore';
 import { PriorityColor, TrackerColor } from '@/lib/ColorMapping';
-import { red } from '@mui/material/colors';
 
 export type IssueCardProps = {
   children:

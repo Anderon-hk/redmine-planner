@@ -6,19 +6,16 @@ import { NextRequest } from 'next/server'
 export async function GET(req: NextRequest) {
   let dbIssues = db.data.issues;
   if(dbIssues && dbIssues.length > 0) {
-    console.log('returning from db')
     return Response.json({
       issues: dbIssues,
       versions: db.data.versions
     });
   }
 
-  console.log('calling to redmine')
 
   let redmineData = await fetchIssuesFromRedmine(db.data.settings.url, db.data.settings.apiToken)
 
   let versionsData = await fetchVersions(redmineData);
-  console.log(`get issues, versionData`, versionsData)
 
   // let redmineData = await fetchIssuesFromRedmine(db.data.settings.url, db.data.settings.apiToken);
   let formattedData = transfromIssues(redmineData);

@@ -53,7 +53,6 @@ export default function IssuePlannerContainer() {
     setRightDrawerOpen((val) => !val)
   }
 
-  console.log('IssuePlanner render')
   
   return (
     <>

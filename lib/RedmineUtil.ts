@@ -48,9 +48,6 @@ export async function fetchVersion(versionId: number): Promise<Version> {
     }
   });
 
-  // const text = response.text()
-  // console.log(`text`, text);
-
   const data = await response.json()
   const rawVersion = data.version as RawVersion
 

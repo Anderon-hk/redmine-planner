@@ -1,9 +1,9 @@
 'use client';
 
 import { useIssuesStore } from '@/store/issuesStore';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Button, Container, Stack, Typography } from '@mui/material';
+import { Button, Container, Stack } from '@mui/material';
 import { IssueNumberrenderer } from './IssueNumberRenderer';
 import { clearBackendIssues, clearIssues } from '@/lib/Utils';
 import { IssueTrackerRenderer } from './IssueTrackerRenderer';

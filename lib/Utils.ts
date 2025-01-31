@@ -3,7 +3,6 @@
 import { GroupedIssues, issueGroupStore } from '@/store/issueGroupStore'
 import { Issue } from './RedmineTyping';
 import { query } from '@chronicstone/array-query';
-import { getPriority } from 'os';
 import { issueStore } from '@/store/issuesStore';
 import { CrossDueDateCheck, issueWarningStore, PriorityDueDateWarning, VersionsLastestDueDate } from '@/store/issueWarningStore';
 
