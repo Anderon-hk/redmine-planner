@@ -3,6 +3,7 @@ import { Chip, SxProps } from '@mui/material';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 
 export const PriorityRenderer = (params: GridRenderCellParams<any, string>) => {
+  if(params.value === undefined) return null;
   let colorMapping = PriorityColor[params.value?.toLocaleLowerCase()];
   let chipSx: SxProps = {}
   if(colorMapping) {
