@@ -1,14 +1,14 @@
 'use client'
 
-import { GroupedIssues, useIssueGroupStore } from '@/store/issueGroupStore';
+import { useIssueGroupStore } from '@/store/issueGroupStore';
 import { useIssuesStore } from '@/store/issuesStore';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { useEffect, useState } from 'react';
 import { DateDropZone } from './DateDropZone';
-import { AppBar, Box, Button, Card, Container, Drawer, Grid2 as Grid, List, ListItem, SwipeableDrawer, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Container, Grid2 as Grid, Toolbar } from '@mui/material';
 import { IssueCard } from './IssueCard';
 import { DueDateSetDialog } from './DueDateSetDialog';
-import { sortDateKyes } from '@/lib/Utils';
+import { sortDateKyes, warningCheck } from '@/lib/Utils';
 import { VersionLatestDueDateCard } from './VersionLatestDueDateCard';
 import CrossVersionDueDateWarning from './CrossVersionDueDateWarning';
 import { PriorityDueDateWarning } from './PriorityDueDateWarning';
@@ -26,6 +26,7 @@ export default function IssuePlannerContainer() {
 
   useEffect(() => {
     setGroupedIssues(issues);
+    warningCheck()
   }, [issues, setGroupedIssues])
 
   useEffect(() => {

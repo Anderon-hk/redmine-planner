@@ -1,4 +1,5 @@
-import { Issue, RawIssue } from './RedmineTyping';
+import { db } from '@/db/db';
+import { Issue, RawIssue, RawVersion, Version } from './RedmineTyping';
 
 export function transfromIssues (rawIssues: RawIssue[]): Issue[] {
   return rawIssues.map((rawIssue) => {
@@ -34,4 +35,47 @@ export async function fetchIssuesFromRedmine(url: string, apiKey: string): Promi
   });
   const data = await response.json();
   return data.issues;
+}
+
+export async function fetchVersion(versionId: number): Promise<Version> {
+  const apiUrl = db.data.settings.url
+  const apiKey = db.data.settings.apiToken
+  const host = getHost(apiUrl)
+  const url = `${host}/versions/${versionId}.json`;
+  const response = await fetch(url, {
+    headers: {
+      'X-Redmine-API-Key': apiKey,
+    }
+  });
+
+  // const text = response.text()
+  // console.log(`text`, text);
+
+  const data = await response.json()
+  const rawVersion = data.version as RawVersion
+
+  let version: Version = {}
+  version[rawVersion.name] = rawVersion.due_date
+  return version
+}
+
+// apiUrl is the url in settings
+export function getHost(apiUrl: string) {
+  const url = new URL(apiUrl)
+  return url.origin
+}
+
+export async function fetchVersions(rawIssues: RawIssue[]): Promise<Version> {
+  const versionIds = new Set(rawIssues.filter(issue => issue.fixed_version?.id).map(issue => issue.fixed_version!.id))
+  const versionPromises = Array.from(versionIds).map(versionId => fetchVersion(versionId))
+  let versions = await Promise.all(versionPromises)  
+  let versionData = versions.reduce((acc, version) => {
+    acc = {
+      ...acc,
+      ...version
+    }
+    return acc
+  }, {})
+
+  return versionData
 }

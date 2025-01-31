@@ -7,13 +7,16 @@ import { Button, Container, Stack, Typography } from '@mui/material';
 import { query } from '@chronicstone/array-query';
 import { buildIssuesMap } from '@/lib/Utils';
 import { Issue } from '@/lib/RedmineTyping';
+import { IssueNumberrenderer } from './IssueNumberRenderer';
+import { IssueTrackerRenderer } from './IssueTrackerRenderer';
+import { PriorityRenderer } from './PriorityRenderer';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'id', headerName: 'ID', width: 90, renderCell: IssueNumberrenderer },
   { field: 'project', headerName: 'Project', width: 150 },
-  { field: 'tracker', headerName: 'Tracker', width: 150 },
+  { field: 'tracker', headerName: 'Tracker', width: 200, renderCell: IssueTrackerRenderer },
   { field: 'status', headerName: 'Status', width: 150 },
-  { field: 'priority', headerName: 'Priority', width: 150 },
+  { field: 'priority', headerName: 'Priority', width: 150, renderCell: PriorityRenderer },
   // { field: 'author', headerName: 'Author', width: 150 },
   // { field: 'assigned_to', headerName: 'Assigned To', width: 150 },
   { field: 'fixed_version', headerName: 'Version', width: 150 },

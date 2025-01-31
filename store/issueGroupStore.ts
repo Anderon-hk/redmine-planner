@@ -24,3 +24,5 @@ export const useIssueGroupStore = create<IssueGroupStore>((set) => ({
     set({ groupedIssues: grouped })
   },
 }))
+
+export const issueGroupStore = useIssueGroupStore

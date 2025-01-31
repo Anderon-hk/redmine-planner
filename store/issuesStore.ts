@@ -1,18 +1,21 @@
-import { Issue } from '@/lib/RedmineTyping';
+import { Issue, Version } from '@/lib/RedmineTyping';
 import { buildIssuesMap, buildMapByKey, getFieldValuesSet, issueVersionComparator } from '@/lib/Utils';
 import { create } from 'zustand';
 
 
 export const ISSUE_STORAGE_KEY = 'redmine_planner_issues';
+export const VERSION_STORAGE_KEY = 'redmine_planner_issues_versions';
 
 type IssuesStore = {
   issues: Issue[];
   issuesVersions: Issue['fixed_version'][];
+  versions: Version;
   setIssues: (issues: Issue[]) => void;
   addIssue: (issue: Issue) => void;
   removeIssue: (id: number) => void;
   fetchIssues: () => Promise<void>;
   buildIssuesVersions: () => void;
+  setVersions: (versions: Version) => void;
 };
 
 export const getInitialIssues = (): Issue[] => {
@@ -24,6 +27,11 @@ export const getInitialIssues = (): Issue[] => {
 export const getInitialIssuesVersions = (): Issue['fixed_version'][] => {
   const issues = getInitialIssues();
   return getFieldValuesSet(issues, 'fixed_version', issueVersionComparator);
+}
+
+const getInitialVersions = (): Version => {
+  const storedVersions = localStorage?.getItem(VERSION_STORAGE_KEY);
+  return storedVersions ? JSON.parse(storedVersions) : {};
 }
 
 //merge data from backend to avoid updated revies date
@@ -48,6 +56,7 @@ export function mergeIssues(localIssues: Issue[], remoteIssues: Issue[]): Issue[
 export const useIssuesStore = create<IssuesStore>((set, get) => ({
   issues: (() => (getInitialIssues()))(),
   issuesVersions: (()=> (getInitialIssuesVersions()))(),
+  versions: (() => (getInitialVersions()))(),
   setIssues: (issues) => {
     localStorage.setItem(ISSUE_STORAGE_KEY, JSON.stringify(issues));
     set({ issues });
@@ -65,15 +74,26 @@ export const useIssuesStore = create<IssuesStore>((set, get) => ({
   }),
   fetchIssues: async () => {
     const response = await fetch('/api/issues');
-    const data = await response.json();
-    const {issues: localIssues} = get()
-    const finalIssues = mergeIssues(localIssues, data)
+    const {issues, versions} = await response.json();
+    const {issues: localIssues, setVersions} = get()
+    const finalIssues = mergeIssues(localIssues, issues)
     set({ issues: finalIssues });
-    localStorage.setItem(ISSUE_STORAGE_KEY, JSON.stringify(data));
+    localStorage.setItem(ISSUE_STORAGE_KEY, JSON.stringify(issues));
+    setVersions(versions);
   },
   buildIssuesVersions: () => {
     const issues = get().issues;
     const issuesVersions = getFieldValuesSet(issues, 'fixed_version', issueVersionComparator);
     set({issuesVersions: issuesVersions});
+  },
+  setVersions: (versions: Version) => {
+    let newVersion: Version = {}
+    Object.keys(versions).forEach(ver => {
+      newVersion[ver] = versions[ver]
+    })
+    localStorage.setItem(VERSION_STORAGE_KEY, JSON.stringify(newVersion));
+    set({versions: newVersion});
   }
 }));
+
+export const issueStore = useIssuesStore

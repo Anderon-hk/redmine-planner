@@ -2,6 +2,9 @@ import React from "react";
 import { useDraggable } from "@dnd-kit/core";
 import { Issue } from '@/lib/RedmineTyping';
 import { Card, CardContent, Chip, Tooltip, Typography } from '@mui/material';
+import { useIssuesStore } from '@/store/issuesStore';
+import { PriorityColor, TrackerColor } from '@/lib/ColorMapping';
+import { red } from '@mui/material/colors';
 
 export type IssueCardProps = {
   children:
@@ -19,6 +22,7 @@ export type IssueCardProps = {
 };
 
 export function IssueCard({issueObject}: IssueCardProps) {
+  const versions = useIssuesStore(state => state.versions)
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id:issueObject.id,
   });
@@ -30,7 +34,7 @@ export function IssueCard({issueObject}: IssueCardProps) {
 
   return (
     <Card ref={setNodeRef} {...listeners} {...attributes} style={style} 
-      elevation={5}
+      elevation={12}
       sx={{
         margin:1
       }}
@@ -38,12 +42,29 @@ export function IssueCard({issueObject}: IssueCardProps) {
     >
       <CardContent >
         <Tooltip title={issueObject.description} >
-          <Typography variant='subtitle1' >{issueObject.subject}</Typography>
+          <Typography variant='subtitle1'  component='div'
+            sx={{
+              wordWrap: 'break-word'
+            }}
+          >
+            {issueObject.subject}
+          </Typography>
         </Tooltip>
-        <Chip size='small' label={issueObject.priority} />
-        <Chip size='small' label={issueObject.fixed_version} />
+        <Chip size='small' label={issueObject.priority} sx={{
+          bgcolor: PriorityColor[issueObject.priority.toLocaleLowerCase()].bgColor,
+          color: PriorityColor[issueObject.priority.toLocaleLowerCase()].color
+          }} 
+        />
+        <Tooltip title={versions[issueObject.fixed_version] || ''} >
+          <Chip size='small' label={issueObject.fixed_version} />
+        </Tooltip>
         <Chip size='small' label={`${issueObject.dev_time}H`} />
-        <Chip size='small' label={issueObject.tracker} />
+        <Chip size='small' label={issueObject.tracker} 
+          sx={{
+            bgcolor: TrackerColor[issueObject.tracker.toLocaleLowerCase()].bgColor,
+            color: TrackerColor[issueObject.tracker.toLocaleLowerCase()].color
+          }}
+        />
         <Chip size='small' label={issueObject.project} />
       </CardContent>
     </Card>

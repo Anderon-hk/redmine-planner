@@ -65,3 +65,22 @@ export type Issue = {
   dev_time: string;
   revised_due_date: string;
 }
+
+
+export type RawVersion = {
+  id: number;
+  project: {
+      id: number,
+      name: string
+  };
+  name: string;
+  description: string;
+  status: string;
+  due_date: string;
+  sharing: string;
+  created_on: string;
+  updated_on: string;
+}
+
+
+export type Version = Record<RawVersion['name'], RawVersion['due_date']>;

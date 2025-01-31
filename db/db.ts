@@ -1,69 +1,32 @@
-import { Issue } from '@/lib/RedmineUtil';
+import { Issue, Version } from '@/lib/RedmineTyping';
 import { Low, LowSync } from 'lowdb';
 import { JSONFile, JSONFilePreset, JSONFileSync, JSONFileSyncPreset } from 'lowdb/node';
 import { join } from 'path';
 import { cwd } from 'process';
 
-// export type Issue = {
-//   id: number;
-//   project: {
-//     id: number;
-//     name: string;
-//   };
-//   tracker: {
-//     id: number;
-//     name: string;
-//   };
-//   status: {
-//     id: number;
-//     name: string;
-//   };
-//   priority: {
-//     id: number;
-//     name: string;
-//   };
-//   author: {
-//     id: number;
-//     name: string;
-//   };
-//   assigned_to: {
-//     id: number;
-//     name: string;
-//   };
-//   fixed_version: {
-//     id: number;
-//     name: string;
-//   };
-//   subject: string;
-//   description: string;
-//   start_date: string;
-//   due_date: string;
-//   done_ratio: number;
-//   custom_fields: Array<{
-//     id: number;
-//     name: string;
-//     multiple?: boolean;
-//     value: string | string[];
-//   }>;
-//   created_on: string;
-//   updated_on: string;
-//   estimated_hours: number;
-// };
 
 export type Data = {
   settings: {
     url: string;
     apiToken: string;
+    redmineHost: string;
+    weeklyHourUpperWarning?: number;
+    weeklyHourLowerWarning?: number;
   },
   issues: Issue[];
+  versions: Version;
 }
 
 const dbData : Data = {
   settings: {
     url: '',
     apiToken: '',
+    redmineHost: '',
+    weeklyHourLowerWarning: undefined,
+    weeklyHourUpperWarning: undefined
   },
   issues: [],
+  versions: {}
 }
 
 console.log('current dir', join(cwd(), 'db', 'db.json'));
