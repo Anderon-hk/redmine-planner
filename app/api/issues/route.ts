@@ -1,9 +1,10 @@
-import { db } from '@/db/db';
+import { getDB } from '@/db/db';
 import { fetchIssuesFromRedmine, fetchVersion, fetchVersions, transfromIssues } from '@/lib/RedmineUtil';
 import { Dvr } from '@mui/icons-material';
 import { NextRequest } from 'next/server'
 
 export async function GET(req: NextRequest) {
+  const db = await getDB()
   let dbIssues = db.data.issues;
   if(dbIssues && dbIssues.length > 0) {
     return Response.json({

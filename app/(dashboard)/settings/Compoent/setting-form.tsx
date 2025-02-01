@@ -1,9 +1,9 @@
 'use client'
 
-import { Data } from '@/db/db';
 import { updateSettings } from '@/db/settings-action';
 import React, { useEffect, useState } from 'react';
 import { TextField, Button, Container } from '@mui/material';
+import { Data } from '@/db/db-typing';
 
 export default function SettingForm({ initialSettings }: { initialSettings: Data['settings'] }) {
   const [url, setUrl] = useState(initialSettings.url || '');

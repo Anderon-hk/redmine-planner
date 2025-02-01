@@ -1,8 +1,8 @@
-import { db } from '@/db/db';
+import { getDB } from '@/db/db';
 import { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  let dbData = db
+  let db = await getDB()
   db.update(data => {
     data.issues = []
     data.versions = {}

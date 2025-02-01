@@ -1,4 +1,4 @@
-import { db } from '@/db/db';
+import { getDB } from '@/db/db';
 import { Issue, RawIssue, RawVersion, Version } from './RedmineTyping';
 
 export function transfromIssues (rawIssues: RawIssue[]): Issue[] {
@@ -38,6 +38,7 @@ export async function fetchIssuesFromRedmine(url: string, apiKey: string): Promi
 }
 
 export async function fetchVersion(versionId: number): Promise<Version> {
+  const db = await getDB()
   const apiUrl = db.data.settings.url
   const apiKey = db.data.settings.apiToken
   const host = getHost(apiUrl)
