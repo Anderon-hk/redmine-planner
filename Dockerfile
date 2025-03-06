@@ -2,7 +2,7 @@
 FROM node:20-alpine as base
 
 WORKDIR /app
-RUN corepack enable pnpm
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 COPY package*.json ./
 COPY ./pnpm-lock.yaml ./
