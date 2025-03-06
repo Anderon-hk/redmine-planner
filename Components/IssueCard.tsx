@@ -1,9 +1,10 @@
 import React from "react";
 import { useDraggable } from "@dnd-kit/core";
 import { Issue } from '@/lib/RedmineTyping';
-import { Card, CardContent, Chip, Tooltip, Typography } from '@mui/material';
+import { Card, CardContent, Chip, Link, Tooltip, Typography } from '@mui/material';
 import { useIssuesStore } from '@/store/issuesStore';
 import { PriorityColor, TrackerColor } from '@/lib/ColorMapping';
+import { useSettingStore } from '@/store/settingsStore';
 
 export type IssueCardProps = {
   children:
@@ -22,6 +23,7 @@ export type IssueCardProps = {
 
 export function IssueCard({issueObject}: IssueCardProps) {
   const versions = useIssuesStore(state => state.versions)
+  const redmineHost = useSettingStore((state) => state.settings.redmineHost);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id:issueObject.id,
   });
@@ -41,12 +43,20 @@ export function IssueCard({issueObject}: IssueCardProps) {
     >
       <CardContent >
         <Tooltip title={issueObject.description} >
+          
           <Typography variant='subtitle1'  component='div'
             sx={{
               wordWrap: 'break-word'
             }}
           >
-            {issueObject.subject}
+            <Link href={`${redmineHost}/issues/${issueObject.id}`} 
+              target='_blank' rel='noopener noreferrer'
+              underline='none'
+              variant='inherit'
+              color='textPrimary'
+            >
+              {issueObject.subject}
+            </Link>
           </Typography>
         </Tooltip>
         <Chip size='small' label={issueObject.priority} sx={{
@@ -65,6 +75,7 @@ export function IssueCard({issueObject}: IssueCardProps) {
           }}
         />
         <Chip size='small' label={issueObject.project} />
+        <Chip size='small' label={issueObject.status} />
       </CardContent>
     </Card>
   );

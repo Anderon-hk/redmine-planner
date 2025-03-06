@@ -4,13 +4,14 @@ import { updateSettings } from '@/db/settings-action';
 import React, { useEffect, useState } from 'react';
 import { TextField, Button, Container } from '@mui/material';
 import { Data } from '@/db/db-typing';
+import { SETTINGS_STORAGE_KEY, useSettingStore } from '@/store/settingsStore';
 
 export default function SettingForm({ initialSettings }: { initialSettings: Data['settings'] }) {
   const [url, setUrl] = useState(initialSettings.url || '');
   const [token, setToken] = useState(initialSettings.apiToken || '');
   const [weeklyHourLowerWarning, setWeeklyHourLowerWarning] = useState(initialSettings.weeklyHourLowerWarning || undefined);
   const [weeklyHourUpperWarning, setWeeklyHourUpperWarning] = useState(initialSettings.weeklyHourUpperWarning || undefined);
-  // const {settings, setHost, setWeeklyHourLowerWarning, setWeeklyHourUpperWarning} = useSettingStore();
+  const {settings, setSettings } = useSettingStore();
 
   const updateSettingsHandler = async (event: Event) => {
     event.preventDefault();
@@ -34,7 +35,12 @@ export default function SettingForm({ initialSettings }: { initialSettings: Data
       weeklyHourUpperWarning: weeklyHourUpperWarning
     }
 
-    localStorage.setItem('redmine_planner_settings', JSON.stringify(settingsObj));
+    localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settingsObj));
+    setSettings({
+      redmineHost: origin,
+      weeklyHourLowerWarning: weeklyHourLowerWarning,
+      weeklyHourUpperWarning: weeklyHourUpperWarning
+    });
     alert('Settings updated successfully');
   };
 
